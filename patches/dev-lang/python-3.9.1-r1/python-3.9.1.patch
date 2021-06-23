@@ -1,0 +1,14 @@
+diff -ur Python-3.9.1_orig/Modules/socketmodule.h Python-3.9.1/Modules/socketmodule.h
+--- Python-3.9.1_orig/Modules/socketmodule.h	2020-12-07 20:02:38.000000000 +0600
++++ Python-3.9.1/Modules/socketmodule.h	2021-05-20 16:43:27.892582100 +0600
+@@ -8,9 +8,7 @@
+ #   include <sys/socket.h>
+ # endif
+ # include <netinet/in.h>
+-# if !defined(__CYGWIN__)
+-#  include <netinet/tcp.h>
+-# endif
++# include <netinet/tcp.h>
+ 
+ #else /* MS_WINDOWS */
+ # include <winsock2.h>

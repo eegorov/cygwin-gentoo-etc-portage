@@ -1,0 +1,12 @@
+diff -ur gettext-0.21_orig/gettext-tools/libgettextpo/Makefile.in gettext-0.21/gettext-tools/libgettextpo/Makefile.in
+--- gettext-0.21_orig/gettext-tools/libgettextpo/Makefile.in	2020-07-27 03:04:58.000000000 +0600
++++ gettext-0.21/gettext-tools/libgettextpo/Makefile.in	2021-06-06 13:54:04.096845400 +0600
+@@ -2589,7 +2589,7 @@
+ 	windows-once.c windows-recmutex.c windows-rwlock.c \
+ 	windows-tls.c
+ libgnu_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(LIBTHREAD) \
+-	$(LIB_HARD_LOCALE) $(LIB_MBRTOWC) $(LIB_SETLOCALE_NULL) \
++	$(LIB_HARD_LOCALE) $(LIB_MBRTOWC) $(LIB_SETLOCALE_NULL) -lgettext \
+ 	$(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) $(am__append_6)
+ 
+ # Use this preprocessor expression to decide whether #include_next works.

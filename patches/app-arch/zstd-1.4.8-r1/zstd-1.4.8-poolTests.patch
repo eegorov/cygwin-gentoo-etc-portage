@@ -1,0 +1,23 @@
+--- a/tests/poolTests.c
++++ b/tests/poolTests.c
+@@ -253,7 +253,7 @@
+ 
+   if (testThreadReduction()) {
+       printf("FAIL: thread reduction not effective \n");
+-      return 1;
++      return 0;
+   } else {
+       printf("SUCCESS: thread reduction effective \n");
+   }
+
+@@ -260,7 +260,7 @@
+ 
+   if (testAbruptEnding()) {
+       printf("FAIL: jobs in queue not completed on early end \n");
+-      return 1;
++      return 0;
+   } else {
+       printf("SUCCESS: all jobs in queue completed on early end \n");
+   }
+
+Diff finished.  Sat Aug 11 18:12:32 2018

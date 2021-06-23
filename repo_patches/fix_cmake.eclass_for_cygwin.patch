@@ -1,0 +1,12 @@
+diff -ur a/eclass/cmake.eclass b/eclass/cmake.eclass
+--- a/eclass/cmake.eclass	2021-05-27 14:29:54.229283300 +0600
++++ b/eclass/cmake.eclass	2021-05-27 14:24:20.165154600 +0600
+@@ -462,7 +462,7 @@
+ 		cat >> "${build_rules}" <<- _EOF_ || die
+ 			# in Prefix we need rpath and must ensure cmake gets our default linker path
+ 			# right ... except for Darwin hosts
+-			if(NOT APPLE)
++			if(NOT CYGWIN)
+ 				set(CMAKE_SKIP_RPATH OFF CACHE BOOL "" FORCE)
+ 				set(CMAKE_PLATFORM_REQUIRED_RUNTIME_PATH "${EPREFIX}/usr/${CHOST}/lib/gcc;${EPREFIX}/usr/${CHOST}/lib;${EPREFIX}/usr/$(get_libdir);${EPREFIX}/$(get_libdir)" CACHE STRING "" FORCE)
+ 			else()

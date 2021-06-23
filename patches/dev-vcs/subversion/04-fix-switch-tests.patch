@@ -1,0 +1,27 @@
+Fix a switch test that expects to an error due to read-only, but
+
+From: David Rothenberger <d.rothenberger@entomo.com>
+
+doesn't because the user has Administrator privileges.
+---
+ subversion/tests/cmdline/switch_tests.py |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/subversion/tests/cmdline/switch_tests.py b/subversion/tests/cmdline/switch_tests.py
+index f71ec73..fd9be77 100755
+--- a/subversion/tests/cmdline/switch_tests.py
++++ b/subversion/tests/cmdline/switch_tests.py
+@@ -773,6 +773,13 @@ def refresh_read_only_attribute(sbox):
+     if os.geteuid() == 0:
+       raise svntest.Skip('Test doesn\'t work as uid 0')
+ 
++  # Same test, but for Cygwin
++  if os.name == 'posix':
++    try:
++      os.getgroups.index(513)
++    except:
++      raise svntest.Skip('Test doesn\'t work as Cygwin admin')
++
+   sbox.build()
+   wc_dir = sbox.wc_dir
+ 

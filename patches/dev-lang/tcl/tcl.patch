@@ -1,0 +1,28 @@
+diff -ur tcl8.6.11_orig/unix/Makefile.in tcl8.6.11/unix/Makefile.in
+--- tcl8.6.11_orig/unix/Makefile.in	2021-06-17 23:28:13.535201000 +0600
++++ tcl8.6.11/unix/Makefile.in	2021-06-17 23:29:38.777346200 +0600
+@@ -723,9 +723,6 @@
+ 	@MAKE_LIB@
+ 
+ ${STUB_LIB_FILE}: ${STUB_LIB_OBJS}
+-	@if test "x${LIB_FILE}" = "xlibtcl${MAJOR_VERSION}.${MINOR_VERSION}.dll"; then \
+-	    (cd ${TOP_DIR}/win; ${MAKE} winextensions); \
+-	fi
+ 	rm -f $@
+ 	@MAKE_STUB_LIB@
+ 
+diff -ur tcl8.6.11_orig/unix/tclUnixPort.h tcl8.6.11/unix/tclUnixPort.h
+--- tcl8.6.11_orig/unix/tclUnixPort.h	2020-07-07 02:41:07.000000000 +0600
++++ tcl8.6.11/unix/tclUnixPort.h	2021-06-17 23:29:01.870170400 +0600
+@@ -149,11 +149,7 @@
+ #ifdef HAVE_STDINT_H
+ #   include <stdint.h>
+ #endif
+-#ifdef HAVE_UNISTD_H
+ #   include <unistd.h>
+-#else
+-#   include "../compat/unistd.h"
+-#endif
+ 
+ extern int TclUnixSetBlockingMode(int fd, int mode);
+ 

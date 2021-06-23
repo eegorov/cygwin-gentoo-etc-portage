@@ -1,0 +1,137 @@
+Support wincrypt for password encryption on Cygwin.
+
+From: David Rothenberger <daveroth@acm.org>
+
+
+---
+ build.conf                               |    5 +++++
+ subversion/include/svn_auth.h            |    2 +-
+ subversion/libsvn_subr/auth.c            |    2 +-
+ subversion/libsvn_subr/config_file.c     |    2 +-
+ subversion/libsvn_subr/win32_crypto.c    |    5 ++++-
+ subversion/tests/libsvn_subr/auth-test.c |    6 ++++--
+ 6 files changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/build.conf b/build.conf
+index 33084f7..9222e57 100644
+--- a/build.conf
++++ b/build.conf
+@@ -376,6 +376,7 @@ path = subversion/libsvn_subr
+ sources = *.c lz4/*.c
+ libs = aprutil apriconv apr xml zlib apr_memcache
+        sqlite magic intl lz4 utf8proc macos-plist macos-keychain
++       wincrypt
+ msvc-libs = kernel32.lib advapi32.lib shfolder.lib ole32.lib
+             crypt32.lib version.lib
+ msvc-export = 
+@@ -1549,6 +1550,10 @@ type = lib
+ external-lib = $(SVN_FS_LIB_LINK)
+ libs = libsvn_fs_base libsvn_fs_fs libsvn_fs_x
+ 
++[wincrypt]
++type = lib
++external-lib = -lcrypt32
++
+ [__ALL__]
+ type = project
+ path = build/win32
+diff --git a/subversion/include/svn_auth.h b/subversion/include/svn_auth.h
+index ca3b703..7c3c56b 100644
+--- a/subversion/include/svn_auth.h
++++ b/subversion/include/svn_auth.h
+@@ -865,7 +865,7 @@ svn_auth_get_platform_specific_client_providers(
+   svn_config_t *config,
+   apr_pool_t *pool);
+ 
+-#if (defined(WIN32) && !defined(__MINGW32__)) || defined(DOXYGEN)
++#if ((defined(WIN32) && !defined(__MINGW32__)) || defined(__CYGWIN__)) || defined(DOXYGEN)
+ /**
+  * Set @a *provider to an authentication provider of type @c
+  * svn_auth_cred_simple_t that gets/sets information from the user's
+diff --git a/subversion/libsvn_subr/auth.c b/subversion/libsvn_subr/auth.c
+index 9d58c73..ae1957e 100644
+--- a/subversion/libsvn_subr/auth.c
++++ b/subversion/libsvn_subr/auth.c
+@@ -578,7 +578,7 @@ svn_auth_get_platform_specific_provider(svn_auth_provider_object_t **provider,
+         }
+ #endif
+ 
+-#if defined(WIN32) && !defined(__MINGW32__)
++#if (defined(WIN32) && !defined(__MINGW32__)) || defined(__CYGWIN__)
+       if (strcmp(provider_name, "windows") == 0 &&
+           strcmp(provider_type, "simple") == 0)
+         {
+diff --git a/subversion/libsvn_subr/config_file.c b/subversion/libsvn_subr/config_file.c
+index 9c0a83a..a6863a6 100644
+--- a/subversion/libsvn_subr/config_file.c
++++ b/subversion/libsvn_subr/config_file.c
+@@ -1371,7 +1371,7 @@ svn_config_ensure(const char *config_dir, apr_pool_t *pool)
+         "###   windows-cryptoapi    (Windows)"                               NL
+ #ifdef SVN_HAVE_KEYCHAIN_SERVICES
+         "# password-stores = keychain"                                       NL
+-#elif defined(WIN32) && !defined(__MINGW32__)
++#elif (defined(WIN32) && !defined(__MINGW32__)) || defined(__CYGWIN__)
+         "# password-stores = windows-cryptoapi"                              NL
+ #else
+         "# password-stores = gpg-agent,gnome-keyring,kwallet"                NL
+diff --git a/subversion/libsvn_subr/win32_crypto.c b/subversion/libsvn_subr/win32_crypto.c
+index deead9f..f688676 100644
+--- a/subversion/libsvn_subr/win32_crypto.c
++++ b/subversion/libsvn_subr/win32_crypto.c
+@@ -26,7 +26,7 @@ typedef int win32_crypto__dummy;
+ 
+ /* ==================================================================== */
+ 
+-#if defined(WIN32) && !defined(__MINGW32__)
++#if (defined(WIN32) && !defined(__MINGW32__)) || defined(__CYGWIN__)
+ 
+ /*** Includes. ***/
+ 
+@@ -45,6 +45,9 @@ typedef int win32_crypto__dummy;
+ 
+ #include "svn_private_config.h"
+ 
++#ifdef __CYGWIN__
++#include <windows.h>
++#endif
+ #include <wincrypt.h>
+ 
+ 
+diff --git a/subversion/tests/libsvn_subr/auth-test.c b/subversion/tests/libsvn_subr/auth-test.c
+index c184442..383b572 100644
+--- a/subversion/tests/libsvn_subr/auth-test.c
++++ b/subversion/tests/libsvn_subr/auth-test.c
+@@ -62,7 +62,7 @@ test_platform_specific_auth_providers(apr_pool_t *pool)
+ #ifdef SVN_HAVE_KEYCHAIN_SERVICES
+   number_of_providers += 2;
+ #endif
+-#if defined(WIN32) && !defined(__MINGW32__)
++#if (defined(WIN32) && !defined(__MINGW32__)) || defined(__CYGWIN__)
+   number_of_providers += 4;
+ #endif
+   if (providers->nelts != number_of_providers)
+@@ -104,7 +104,7 @@ test_platform_specific_auth_providers(apr_pool_t *pool)
+ #endif
+ 
+   /* Test Windows auth providers */
+-#if defined(WIN32) && !defined(__MINGW32__)
++#if (defined(WIN32) && !defined(__MINGW32__)) || defined(__CYGWIN__)
+   svn_auth_get_platform_specific_provider(&provider, "windows",
+                                           "simple", pool);
+ 
+@@ -165,6 +165,7 @@ test_platform_specific_auth_providers(apr_pool_t *pool)
+        "'ssl_client_cert_pw') should not return NULL");
+ 
+   /* Make sure you do not get a Windows auth provider */
++#ifndef __CYGWIN__
+   SVN_ERR(svn_auth_get_platform_specific_provider(&provider, "windows",
+                                                   "simple", pool));
+ 
+@@ -173,6 +174,7 @@ test_platform_specific_auth_providers(apr_pool_t *pool)
+       (SVN_ERR_TEST_FAILED, NULL,
+        "svn_auth_get_platform_specific_provider('windows', 'simple') should " \
+        "return NULL");
++#endif
+ #endif
+ 
+   /* Test KWallet auth providers */

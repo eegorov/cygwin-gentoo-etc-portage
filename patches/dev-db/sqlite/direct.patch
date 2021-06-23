@@ -1,0 +1,13 @@
+diff -ur sqlite-src-3350500_orig/ext/misc/fileio.c sqlite-src-3350500/ext/misc/fileio.c
+--- sqlite-src-3350500_orig/ext/misc/fileio.c	2021-06-16 17:08:34.318341400 +0600
++++ sqlite-src-3350500/ext/misc/fileio.c	2021-06-16 17:15:12.951724700 +0600
+@@ -82,7 +82,8 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#if !defined(_WIN32) && !defined(WIN32)
++#if (!defined(_WIN32) && !defined(WIN32)) || defined(__CYGWIN__)
++#  include <sys/mystat.h>
+ #  include <unistd.h>
+ #  include <dirent.h>
+ #  include <utime.h>

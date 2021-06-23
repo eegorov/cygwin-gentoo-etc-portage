@@ -1,0 +1,33 @@
+--- a/Makefile.in	2021-02-11 06:21:10.168597600 +0100
++++ b/Makefile.in	2021-02-12 10:41:38.040019000 +0100
+@@ -154,6 +154,7 @@ SWIG_PY_LINK = @SWIG_PY_LINK@
+ SWIG_PY_LIBS = @SWIG_PY_LIBS@
+ SWIG_PY_ERRMSG = @SWIG_PY_ERRMSG@
+ SWIG_PL_INCLUDES = @SWIG_PL_INCLUDES@
++SWIG_PL_LINK = @SWIG_PL_LINK@
+ SWIG_PL_ERRMSG = @SWIG_PL_ERRMSG@
+ SWIG_RB_INCLUDES = @SWIG_RB_INCLUDES@ -I$(SWIG_SRC_DIR)/ruby/libsvn_swig_ruby
+ SWIG_RB_COMPILE = @SWIG_RB_COMPILE@
+--- a/build.conf	2021-02-11 06:21:07.488123300 +0100
++++ b/build.conf	2021-02-12 10:48:24.007154100 +0100
+@@ -589,7 +589,8 @@ description = Subversion utility library
+ type = swig_lib
+ lang = perl
+ path = subversion/bindings/swig/perl/libsvn_swig_perl
+-libs = libsvn_delta libsvn_subr apriconv apr perl swig
++libs = libsvn_delta libsvn_subr apriconv apr  swig
++link-cmd = $(LINK) $(SWIG_PL_LINK)
+ install = swig-pl-lib
+ # need special build rule to include
+ compile-cmd = $(COMPILE_SWIG_PL)
+@@ -1535,10 +1536,6 @@ external-lib = $(SVN_XML_LIBS)
+ type = lib
+ external-lib = $(SVN_SWIG_LIBS)
+ 
+-[perl]
+-type = lib
+-external-lib = $(SVN_PERL_LIBS)
+-
+ [httpd]
+ type = lib
+ external-lib = -lmod_dav -lhttpd

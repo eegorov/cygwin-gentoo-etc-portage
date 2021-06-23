@@ -1,0 +1,69 @@
+Fix linking for Cygwin.
+
+From: David Rothenberger <daveroth@acm.org>
+
+--- a/build.conf
++++ b/build.conf
+@@ -415,7 +415,7 @@ type = apache-mod
+ path = subversion/mod_dav_svn
+ sources = *.c reports/*.c posts/*.c
+ libs = libsvn_repos libsvn_fs libsvn_delta libsvn_subr libhttpd mod_dav
+-nonlibs = apr aprutil
++       httpd apr aprutil
+ install = apache-mod
+ 
+ [mod_authz_svn]
+@@ -423,8 +423,9 @@ description = Subversion path-based authorization module for Apache
+ when = INSTALL_APACHE_MODS
+ type = apache-mod
+ path = subversion/mod_authz_svn
+-nonlibs = mod_dav_svn apr aprutil
+ libs = libsvn_repos libsvn_subr libhttpd
++       httpd aprutil apr
++       mod_dav_svn
+ install = apache-mod
+ 
+ [mod_dontdothat]
+@@ -432,8 +433,9 @@ description = Apache Httpd module to block certain kinds of Apache Subversion re
+ when = INSTALL_APACHE_MODS
+ type = apache-mod
+ path = tools/server-side/mod_dontdothat
+-nonlibs = mod_dav_svn apr aprutil
+ libs = libsvn_subr libhttpd
++       httpd aprutil apr
++       mod_dav_svn
+ install = tools
+ 
+ # The Subversion FSFS repository manipulation tool
+@@ -572,7 +574,7 @@ lang = python
+ path = subversion/bindings/swig/python/libsvn_swig_py
+ libs = libsvn_client libsvn_wc libsvn_ra libsvn_delta libsvn_subr
+        apriconv apr python swig
+-link-cmd = $(LINK)
++link-cmd = $(LINK) $(SWIG_PY_LIBS)
+ install = swig-py-lib
+ # need special build rule to include -DSWIGPYTHON
+ compile-cmd = $(COMPILE_SWIG_PY)
+@@ -1523,6 +1525,11 @@ external-lib = $(SVN_SWIG_LIBS)
+ type = lib
+ external-lib = $(SVN_PERL_LIBS)
+ 
++[httpd]
++type = lib
++external-lib = -lmod_dav -lhttpd
++libs = aprutil apr
++
+ [python]
+ type = lib
+ external-lib = $(SVN_PYTHON_LIBS)
+--- a/build.conf	2021-02-13 12:00:42.402913300 +0100
++++ b/build.conf	2021-02-13 16:37:47.650597200 +0100
+@@ -773,7 +773,7 @@ path = subversion/tests
+ install = test
+ libs = libsvn_repos libsvn_fs libsvn_delta libsvn_subr aprutil apriconv apr
+ msvc-static = yes
+-undefined-lib-symbols = yes
++# undefined-lib-symbols = yes
+ 
+ # ----------------------------------------------------------------------------
+ # Tests for libsvn_fs_base

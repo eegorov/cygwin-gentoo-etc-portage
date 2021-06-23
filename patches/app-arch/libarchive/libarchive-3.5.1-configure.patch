@@ -1,0 +1,62 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -88,13 +88,10 @@
+ 
+ dnl Compilation on mingw and Cygwin needs special Makefile rules
+ inc_windows_files=no
+-inc_cygwin_files=no
+ case "$host_os" in
+   *mingw* ) inc_windows_files=yes ;;
+-  *cygwin* | *msys*) inc_cygwin_files=yes ;;
+ esac
+ AM_CONDITIONAL([INC_WINDOWS_FILES], [test $inc_windows_files = yes])
+-AM_CONDITIONAL([INC_CYGWIN_FILES], [test $inc_cygwin_files = yes])
+ 
+ dnl Defines that are required for specific platforms (e.g. -D_POSIX_SOURCE, etc)
+ PLATFORMCPPFLAGS=
+@@ -246,7 +243,7 @@
+ 
+ # Set up defines needed before including any headers
+ case $host in
+-  *mingw* | *cygwin* | *msys*  )
++  *mingw* | *msys*  )
+   AC_PREPROC_IFELSE([AC_LANG_PROGRAM(
+     [[#ifdef _WIN32_WINNT
+      # error _WIN32_WINNT already defined
+@@ -333,7 +330,7 @@
+ if test "x$with_bz2lib" != "xno"; then
+   AC_CHECK_HEADERS([bzlib.h])
+   case "$host_os" in
+-    *mingw* | *cygwin* | *msys*)
++    *mingw* | *msys*)
+       dnl AC_CHECK_LIB cannot be used on the Windows port of libbz2, therefore
+ 	  dnl use AC_LINK_IFELSE.
+ 	  AC_MSG_CHECKING([for BZ2_bzDecompressInit in -lbz2])
+@@ -1106,7 +1103,7 @@
+ ])
+ 
+ case "$host_os" in
+-  *mingw* | *cygwin* | *msys*)
++  *mingw* | *msys*)
+ 	;;
+   *)
+ 	CRYPTO_CHECK(MD5, LIBC, md5)
+@@ -1174,7 +1171,7 @@
+     AC_CHECK_HEADERS([openssl/evp.h])
+     saved_LIBS=$LIBS
+     case "$host_os" in
+-      *mingw* | *cygwin* | *msys*)
++      *mingw* | *msys*)
+         case "$host_cpu" in
+           x86_64)
+             AC_CHECK_LIB(eay64,OPENSSL_config)
+@@ -1215,7 +1212,7 @@
+ fi
+ 
+ case "$host_os" in
+-  *mingw* | *cygwin* | *msys*)
++  *mingw* | *msys*)
+ 	CRYPTO_CHECK_WIN(MD5, CALG_MD5)
+ 	CRYPTO_CHECK_WIN(SHA1, CALG_SHA1)
+ 	CRYPTO_CHECK_WIN(SHA256, CALG_SHA_256)
+

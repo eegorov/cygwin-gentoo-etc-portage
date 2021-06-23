@@ -1,0 +1,20 @@
+<app-misc/mc-9999 **
+<app-shells/bash-completion-9999 **
+=sys-apps/miscfiles-1.5-r3 **
+app-shells/gentoo-bashcomp **
+sys-libs/slang **
+
+~app-text/xmlto-0.0.28 **
+~dev-util/itstool-2.0.6 **
+=dev-python/setuptools-57.0.0 **
+=dev-python/toml-0.10.2 **
+=dev-lang/tcl-8.6.11 **
+=dev-vcs/subversion-1.14.1 **
+~app-arch/lz4-1.9.3 **
+dev-util/cmake **
+~dev-libs/jsoncpp-1.9.4 **
+net-analyzer/netcat **
+=app-text/dos2unix-7.4.2 **
+sys-apps/man-pages **
+sys-apps/man-pages-posix **
+app-i18n/man-pages-ru **

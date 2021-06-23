@@ -1,0 +1,101 @@
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -197,12 +197,22 @@
+ # see : https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/DynamicLibraryDesignGuidelines.html
+ ifeq ($(UNAME), Darwin)
+   SHARED_EXT = dylib
+-  SHARED_EXT_MAJOR = $(LIBVER_MAJOR).$(SHARED_EXT)
+-  SHARED_EXT_VER = $(LIBVER).$(SHARED_EXT)
+-  SONAME_FLAGS = -install_name $(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR) -compatibility_version $(LIBVER_MAJOR) -current_version $(LIBVER)
++	SHARED_EXT_MAJOR = $(LIBVER_MAJOR).$(SHARED_EXT)
++	SHARED_EXT_VER = $(LIBVER).$(SHARED_EXT)
++	SONAME_FLAGS = -install_name $(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR) -compatibility_version $(LIBVER_MAJOR) -current_version $(LIBVER)
++else ifeq ($(OS), Cygwin)
++	SHARED_PFX = cyg
++	SHARED_EXT = dll.a
++	SHARED_EXT_VER = -$(LIBVER_MAJOR).dll
++	SONAME_FLAGS = -Wl,--out-implib,libzstd.$(SHARED_EXT)
++else ifneq (,$(filter Windows%,$(OS)))
++	SHARED_PFX = lib
++	SHARED_EXT = dll.a
++	SHARED_EXT_VER = -$(LIBVER_MAJOR).dll
++	SONAME_FLAGS = -Wl,--out-implib,libzstd.$(SHARED_EXT)
+ else
+-  SONAME_FLAGS = -Wl,-soname=libzstd.$(SHARED_EXT).$(LIBVER_MAJOR)
+-  SHARED_EXT = so
++	SONAME_FLAGS = -Wl,-soname=libzstd.$(SHARED_EXT).$(LIBVER_MAJOR)
++	SHARED_EXT = so
+   SHARED_EXT_MAJOR = $(SHARED_EXT).$(LIBVER_MAJOR)
+   SHARED_EXT_VER = $(SHARED_EXT).$(LIBVER)
+ endif
+@@ -247,13 +257,12 @@
+ 
+ endif
+ 
+-ifneq (,$(filter Windows%,$(TARGET_SYSTEM)))
++ifneq (,$(filter Windows_NT Cygwin,$(TARGET_SYSTEM)))
+ 
+-LIBZSTD = dll/libzstd.dll
++LIBZSTD = $(SHARED_PFX)zstd$(SHARED_EXT_VER)
+ $(LIBZSTD): $(ZSTD_FILES)
+ 	@echo compiling dynamic library $(LIBVER)
+-	$(CC) $(FLAGS) -DZSTD_DLL_EXPORT=1 -Wl,--out-implib,dll/libzstd.dll.a -shared $^ -o $@
+-
++	@$(CC) $(FLAGS) -shared $^ -DPIC $(SONAME_FLAGS) -o $(LIBZSTD)
+ else  # not Windows
+ 
+ LIBZSTD = libzstd.$(SHARED_EXT_VER)
+@@ -364,6 +373,7 @@
+ exec_prefix ?= $(PREFIX)
+ EXEC_PREFIX ?= $(exec_prefix)
+ libdir      ?= $(EXEC_PREFIX)/lib
++DLLDIR      ?= $(PREFIX)/bin
+ LIBDIR      ?= $(libdir)
+ includedir  ?= $(PREFIX)/include
+ INCLUDEDIR  ?= $(includedir)
+@@ -392,9 +402,9 @@
+   INSTALL ?= install
+ endif
+ 
+-INSTALL_PROGRAM ?= $(INSTALL)
++INSTALL_PROGRAM ?= $(INSTALL) -m 755
+ INSTALL_DATA    ?= $(INSTALL) -m 644
+-
++INSTALL_LIB     ?= $(INSTALL) -m 755
+ 
+ libzstd.pc:
+ libzstd.pc: libzstd.pc.in
+@@ -424,11 +434,16 @@
+ install-shared:
+ 	# only generate libzstd.so if it's not already present
+ 	[ -e $(LIBZSTD) ] || $(MAKE) libzstd-release
++ifneq (,$(filter Windows_NT Cygwin,$(TARGET_SYSTEM)))
++	$(INSTALL_LIB) -d -m 755 $(DESTDIR)$(DLLDIR)/
++	@echo Installing shared library
++	$(INSTALL_LIB) $(SHARED_PFX)zstd$(SHARED_EXT_VER) $(DESTDIR)$(DLLDIR)/
++	$(INSTALL_DATA) libzstd.$(SHARED_EXT) $(DESTDIR)$(LIBDIR)/
++else
+ 	[ -e $(DESTDIR)$(LIBDIR) ] || $(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
+ 	@echo Installing shared library
+ 	$(INSTALL_PROGRAM) $(LIBZSTD) $(DESTDIR)$(LIBDIR)
+-	ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
+-	ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++endif
+ 
+ install-includes:
+ 	[ -e $(DESTDIR)$(INCLUDEDIR) ] || $(INSTALL) -d -m 755 $(DESTDIR)$(INCLUDEDIR)/
+@@ -440,8 +455,13 @@
+ uninstall:
+ 	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
+ 	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++ifneq (,$(filter Windows_NT Cygwin,$(TARGET_SYSTEM)))
++	$(RM) $(DESTDIR)$(DLLDIR)/$(SHARED_PFX)zstd$(SHARED_EXT_VER)
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++else
+ 	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
+ 	$(RM) $(DESTDIR)$(LIBDIR)/$(LIBZSTD)
++endif
+ 	$(RM) $(DESTDIR)$(PKGCONFIGDIR)/libzstd.pc
+ 	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
+ 	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd_errors.h
+

@@ -1,0 +1,27 @@
+
+
+From: David Rothenberger <daveroth@acm.org>
+
+
+---
+ SConstruct |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/SConstruct b/SConstruct
+index 5f62b30..0e96932 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -219,10 +219,10 @@ incdir = '$PREFIX/include/serf-$MAJOR'
+ # Unfortunately we can't set the .dylib compatibility_version option separately
+ # from current_version, so don't use the PATCH level to avoid that build and
+ # runtime patch levels have to be identical.
+-if sys.platform != 'sunos5':
+-  env['SHLIBVERSION'] = '%d.%d.%d' % (MAJOR, MINOR, 0)
++#if sys.platform != 'sunos5':
++#  env['SHLIBVERSION'] = '%d.%d.%d' % (MAJOR, MINOR, 0)
+ 
+-LIBNAME = 'libserf-%d' % (MAJOR,)
++LIBNAME = 'serf-%d' % (MAJOR,)
+ if sys.platform != 'win32':
+   LIBNAMESTATIC = LIBNAME
+ else:

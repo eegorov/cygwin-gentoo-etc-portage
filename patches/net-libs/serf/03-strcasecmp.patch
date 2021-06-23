@@ -1,0 +1,86 @@
+
+
+From: David Rothenberger <daveroth@acm.org>
+
+
+---
+ auth/auth.c                |    1 +
+ auth/auth_basic.c          |    1 +
+ auth/auth_spnego.c         |    1 +
+ buckets/headers_buckets.c  |    1 +
+ buckets/response_buckets.c |    1 +
+ outgoing.c                 |    1 +
+ 6 files changed, 6 insertions(+)
+
+diff --git a/auth/auth.c b/auth/auth.c
+index 4208999..1cfa5d4 100644
+--- a/auth/auth.c
++++ b/auth/auth.c
+@@ -18,6 +18,7 @@
+  * ====================================================================
+  */
+ 
++#include <strings.h>
+ #include "serf.h"
+ #include "serf_private.h"
+ #include "auth.h"
+diff --git a/auth/auth_basic.c b/auth/auth_basic.c
+index fc056d4..1695153 100644
+--- a/auth/auth_basic.c
++++ b/auth/auth_basic.c
+@@ -20,6 +20,7 @@
+ 
+ /*** Basic authentication ***/
+ 
++#include <strings.h>
+ #include <serf.h>
+ #include <serf_private.h>
+ #include <auth/auth.h>
+diff --git a/auth/auth_spnego.c b/auth/auth_spnego.c
+index e7984da..839e738 100644
+--- a/auth/auth_spnego.c
++++ b/auth/auth_spnego.c
+@@ -28,6 +28,7 @@
+  *  The HTTP message exchange is documented in RFC 4559.
+  **/
+ 
++#include <strings.h>
+ #include <serf.h>
+ #include <serf_private.h>
+ #include <auth/auth.h>
+diff --git a/buckets/headers_buckets.c b/buckets/headers_buckets.c
+index 35bf053..bf5aae5 100644
+--- a/buckets/headers_buckets.c
++++ b/buckets/headers_buckets.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include <stdlib.h>
++#include <strings.h>
+ 
+ #include <apr_general.h>  /* for strcasecmp() */
+ 
+diff --git a/buckets/response_buckets.c b/buckets/response_buckets.c
+index eb72ef9..351fea4 100644
+--- a/buckets/response_buckets.c
++++ b/buckets/response_buckets.c
+@@ -18,6 +18,7 @@
+  * ====================================================================
+  */
+ 
++#include <strings.h>
+ #include <apr_lib.h>
+ #include <apr_strings.h>
+ #include <apr_date.h>
+diff --git a/outgoing.c b/outgoing.c
+index 5f5f6b5..02a91c2 100644
+--- a/outgoing.c
++++ b/outgoing.c
+@@ -18,6 +18,7 @@
+  * ====================================================================
+  */
+ 
++#include <strings.h>
+ #include <apr_pools.h>
+ #include <apr_poll.h>
+ #include <apr_version.h>

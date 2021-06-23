@@ -1,0 +1,15 @@
+#!/home/e_egorov/gentoo/bin/bash
+PATCHES_DIR=/home/e_egorov/gentoo_new/etc/portage/repo_patches
+REPO_DIR=/home/e_egorov/gentoo_new/var/db/repos/gentoo
+
+pushd ${REPO_DIR} 1>/dev/null 2>&1
+
+echo "Applying portage fixes ..."
+for p in $(ls ${PATCHES_DIR}/fix*.patch) ; do
+        echo -n " => $p"
+        patch -s -f -p 1 -i $p -r -
+        echo " done ($?)"
+done
+
+popd 1>/dev/null 2>&1
+

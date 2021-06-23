@@ -1,0 +1,35 @@
+--- a/contrib/pzstd/Makefile
++++ b/contrib/pzstd/Makefile
+@@ -37,7 +37,7 @@
+ PZSTD_CPPFLAGS  = $(PZSTD_INC)
+ PZSTD_CCXXFLAGS =
+ PZSTD_CFLAGS    = $(PZSTD_CCXXFLAGS)
+-PZSTD_CXXFLAGS  = $(PZSTD_CCXXFLAGS) -std=c++11
++PZSTD_CXXFLAGS  = $(PZSTD_CCXXFLAGS) -std=gnu++11
+ PZSTD_LDFLAGS   =
+ EXTRA_FLAGS     =
+ ALL_CFLAGS      = $(EXTRA_FLAGS) $(CPPFLAGS) $(PZSTD_CPPFLAGS) $(CFLAGS)   $(PZSTD_CFLAGS)
+
+@@ -74,6 +74,7 @@
+ ALL_SRCS    := $(PZSTD_SRCS) $(PZSTD_TESTS) $(UTILS_TESTS)
+ 
+ 
++LIBEXT = .a
+ # Define *.exe as extension for Windows systems
+ ifneq (,$(filter Windows%,$(OS)))
+ EXT =.exe
+
+--- a/programs/Makefile
++++ b/programs/Makefile
+@@ -338,9 +338,9 @@
+ RC ?= windres
+ # http://stackoverflow.com/questions/708238/how-do-i-add-an-icon-to-a-mingw-gcc-compiled-executable
+ $(RES64_FILE): windres/zstd.rc
+-	$(RC) -o $@ -I ../lib -I windres -i $< -O coff -F pe-x86-64
++	-$(RC) -o $@ -I ../lib -I windres -i $< -O coff -F pe-x86-64
+ $(RES32_FILE): windres/zstd.rc
+-	$(RC) -o $@ -I ../lib -I windres -i $< -O coff -F pe-i386
++	-$(RC) -o $@ -I ../lib -I windres -i $< -O coff -F pe-i386
+ endif
+ 
+ .PHONY: clean

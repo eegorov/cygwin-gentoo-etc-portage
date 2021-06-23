@@ -1,0 +1,1 @@
+/home/e_egorov/gentoo_new/var/db/repos/gentoo/profiles/prefix/windows/cygwin/x64

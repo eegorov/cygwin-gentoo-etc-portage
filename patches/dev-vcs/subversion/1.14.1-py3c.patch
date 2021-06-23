@@ -1,0 +1,21 @@
+--- a/build/ac-macros/py3c.m4	2019-11-04 06:59:36.000000000 +0100
++++ b/build/ac-macros/py3c.m4	2021-02-12 17:50:57.865290700 +0100
+@@ -76,7 +76,7 @@
+ 
+         save_cppflags="$CPPFLAGS"
+         CPPFLAGS="$CPPFLAGS $ac_cv_python_includes"
+-        AC_CHECK_HEADER(py3c.h, [
++        AC_CHECK_HEADER(py3c/py3c.h, [
+           py3c_found="yes"
+         ])
+         CPPFLAGS="$save_cppflags"
+--- a/subversion/bindings/swig/python/libsvn_swig_py/swigutil_py3c.h	2019-11-04 06:59:36.000000000 +0100
++++ b/bindings/swig/python/libsvn_swig_py/swigutil_py3c.h	2021-02-12 17:52:25.205218100 +0100
+@@ -44,6 +44,6 @@
+ 
+ #endif
+ 
+-#include <py3c.h>
++#include <py3c/py3c.h>
+ 
+ #endif

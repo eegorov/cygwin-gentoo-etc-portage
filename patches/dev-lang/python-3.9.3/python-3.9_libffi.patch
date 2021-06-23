@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index d42eb9d..8c99da5 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2142,7 +2142,7 @@ class PyBuildExt(build_ext):
+                                libraries=['m']))
+ 
+         ffi_inc = sysconfig.get_config_var("LIBFFI_INCLUDEDIR")
+-        ffi_lib = None
++        ffi_lib = 'ffi'
+ 
+         ffi_inc_dirs = self.inc_dirs.copy()
+         if MACOS:

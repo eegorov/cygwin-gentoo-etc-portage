@@ -1,0 +1,12 @@
+diff -ur npth-1.6_orig/src/Makefile.am npth-1.6/src/Makefile.am
+--- npth-1.6_orig/src/Makefile.am	2017-05-16 13:21:06.000000000 +0600
++++ npth-1.6/src/Makefile.am	2021-06-07 15:16:41.560919700 +0600
+@@ -58,7 +58,7 @@
+ 
+ else
+ npth_res =
+-no_undefined =
++no_undefined = -no-undefined
+ export_symbols =
+ install-def-file:
+ uninstall-def-file:

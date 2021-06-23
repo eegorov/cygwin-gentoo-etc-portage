@@ -1,0 +1,56 @@
+diff -ur ncurses-6.2_orig/ncurses/tinfo/MKnames.awk ncurses-6.2/ncurses/tinfo/MKnames.awk
+--- ncurses-6.2_orig/ncurses/tinfo/MKnames.awk	2020-02-03 05:34:34.000000000 +0600
++++ ncurses-6.2/ncurses/tinfo/MKnames.awk	2021-05-28 18:39:03.753685800 +0600
+@@ -58,6 +58,14 @@
+ 	print  ""
+ }
+ 
++function print_strings_fix(name,value) {
++	printf  "IT %s[] = {\n", name
++	print  value
++	print  "\t\t(NCURSES_CONST char *)0,"
++	print  "};"
++	print  ""
++}
++
+ function print_offsets(name,value) {
+ 	printf  "static const short _nc_offset_%s[] = {\n", name
+ 	printf "%s",  value
+@@ -138,12 +146,12 @@
+ 		} else {
+ 			print  "#define DCL(it) static IT data##it[]"
+ 			print  ""
+-			print_strings("boolnames", small_boolnames);
+-			print_strings("boolfnames", small_boolfnames);
+-			print_strings("numnames", small_numnames);
+-			print_strings("numfnames", small_numfnames);
+-			print_strings("strnames", small_strnames);
+-			print_strings("strfnames", small_strfnames);
++			print_strings_fix("boolnames", small_boolnames);
++			print_strings_fix("boolfnames", small_boolfnames);
++			print_strings_fix("numnames", small_numnames);
++			print_strings_fix("numfnames", small_numfnames);
++			print_strings_fix("strnames", small_strnames);
++			print_strings_fix("strfnames", small_strfnames);
+ 			print  "#define FIX(it) NCURSES_IMPEXP IT * NCURSES_API NCURSES_PUBLIC_VAR(it)(void) { return data##it; }"
+ 		}
+ 		print  ""
+@@ -192,12 +200,12 @@
+ 		print  ""
+ 		print  "#define DCL(it) NCURSES_EXPORT_VAR(IT) it[]"
+ 		print  ""
+-		print_strings("boolnames", small_boolnames);
+-		print_strings("boolfnames", small_boolfnames);
+-		print_strings("numnames", small_numnames);
+-		print_strings("numfnames", small_numfnames);
+-		print_strings("strnames", small_strnames);
+-		print_strings("strfnames", small_strfnames);
++		print_strings_fix("boolnames", small_boolnames);
++		print_strings_fix("boolfnames", small_boolfnames);
++		print_strings_fix("numnames", small_numnames);
++		print_strings_fix("numfnames", small_numfnames);
++		print_strings_fix("strnames", small_strnames);
++		print_strings_fix("strfnames", small_strfnames);
+ 		print  ""
+ 		print  "#endif /* BROKEN_LINKER */"
+ 	}

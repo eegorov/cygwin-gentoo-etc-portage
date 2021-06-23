@@ -1,0 +1,48 @@
+Use binary mode for svnadmin dump/load.
+
+From: David Rothenberger <d.rothenberger@entomo.com>
+
+
+---
+ subversion/svnadmin/svnadmin.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/subversion/svnadmin/svnadmin.c b/subversion/svnadmin/svnadmin.c
+index 85a6279..f851700 100644
+--- a/subversion/svnadmin/svnadmin.c
++++ b/subversion/svnadmin/svnadmin.c
+@@ -54,6 +54,10 @@
+ 
+ #include "svn_private_config.h"
+ 
++#include <unistd.h>
++#include <io.h>
++#include <fcntl.h>
++
+ 
+ /*** Code. ***/
+ 
+@@ -1439,7 +1443,10 @@ subcommand_dump(apr_getopt_t *os, void *baton, apr_pool_t *pool)
+       out_stream = svn_stream_from_aprfile2(file, FALSE, pool);
+     }
+   else
+-    SVN_ERR(svn_stream_for_stdout(&out_stream, pool));
++    {
++      setmode(STDOUT_FILENO, O_BINARY);
++      SVN_ERR(svn_stream_for_stdout(&out_stream, pool));
++    }
+ 
+   /* Progress feedback goes to STDERR, unless they asked to suppress it. */
+   if (! opt_state->quiet)
+@@ -1715,7 +1722,10 @@ subcommand_load(apr_getopt_t *os, void *baton, apr_pool_t *pool)
+     SVN_ERR(svn_stream_open_readonly(&in_stream, opt_state->file,
+                                      pool, pool));
+   else
+-    SVN_ERR(svn_stream_for_stdin2(&in_stream, TRUE, pool));
++    {
++      setmode(STDIN_FILENO, O_BINARY);
++      SVN_ERR(svn_stream_for_stdin2(&in_stream, TRUE, pool));
++    }
+ 
+   /* Progress feedback goes to STDOUT, unless they asked to suppress it. */
+   if (! opt_state->quiet)

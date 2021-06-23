@@ -1,0 +1,13 @@
+app-arch/zstd **
+sys-libs/libuuid **
+sys-apps/man-db **
+=dev-libs/libpipeline-1.5.3 **
+=sys-apps/groff-1.22.4 **
+=sys-libs/gdbm-1.19 **
+=app-text/manpager-1 **
+=app-text/po4a-0.63 **
+=net-libs/nghttp2-1.43.0 **
+=app-text/opensp-1.5.2-r6 **
+dev-perl/* **
+sys-devel/binutils **
+#=dev-lang/tcl-8.6.11 **

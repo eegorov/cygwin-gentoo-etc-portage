@@ -1,0 +1,58 @@
+Общие подкаталоги: utf8proc-2.6.1_orig/bench и utf8proc-2.6.1/bench
+Только в utf8proc-2.6.1: CMakeFiles
+Только в utf8proc-2.6.1: cygutf8proc-2.dll
+Общие подкаталоги: utf8proc-2.6.1_orig/data и utf8proc-2.6.1/data
+Только в utf8proc-2.6.1_orig/: libutf8proc.a
+Только в utf8proc-2.6.1: libutf8proc.dll.a
+Только в utf8proc-2.6.1_orig/: libutf8proc.pc
+Только в utf8proc-2.6.1_orig/: libutf8proc.so
+Только в utf8proc-2.6.1_orig/: libutf8proc.so.2
+Только в utf8proc-2.6.1_orig/: libutf8proc.so.2.4.1
+diff -u utf8proc-2.6.1_orig/Makefile utf8proc-2.6.1/Makefile
+--- utf8proc-2.6.1_orig/Makefile	2020-12-16 03:36:45.000000000 +0600
++++ utf8proc-2.6.1/Makefile	2021-06-23 14:56:53.136590700 +0600
+@@ -7,6 +7,8 @@
+ FIND=find
+ PERL=perl
+ 
++MODNAME=utf8proc
++
+ # compiler settings
+ CFLAGS ?= -O2
+ PICFLAG = -fPIC
+@@ -48,7 +50,7 @@
+ 
+ .PHONY: all clean data update manifest install
+ 
+-all: libutf8proc.a libutf8proc.$(SHLIB_EXT)
++all: cyg$(MODNAME)-$(MAJOR).dll
+ 
+ clean:
+ 	rm -f utf8proc.o libutf8proc.a libutf8proc.$(SHLIB_VERS_EXT) libutf8proc.$(SHLIB_EXT)
+@@ -102,18 +104,18 @@
+ 		-e 's#VERSION#$(MAJOR).$(MINOR).$(PATCH)#' \
+ 		libutf8proc.pc.in > libutf8proc.pc
+ 
+-install: libutf8proc.a libutf8proc.$(SHLIB_EXT) libutf8proc.$(SHLIB_VERS_EXT) libutf8proc.pc
++cyg$(MODNAME)-$(MAJOR).dll: utf8proc.o
++	$(CC) $(LDFLAGS) $(LDFLAG_SHARED) -o $@ -Wl,--out-implib=lib${MODNAME}.dll.a -Wl,--export-all-symbols -Wl,--enable-auto-import $<
++
++install: cyg$(MODNAME)-$(MAJOR).dll libutf8proc.pc
+ 	mkdir -m 755 -p $(DESTDIR)$(includedir)
+ 	$(INSTALL) -m 644 utf8proc.h $(DESTDIR)$(includedir)
+ 	mkdir -m 755 -p $(DESTDIR)$(libdir)
+-	$(INSTALL) -m 644 libutf8proc.a $(DESTDIR)$(libdir)
+-	$(INSTALL) -m 755 libutf8proc.$(SHLIB_VERS_EXT) $(DESTDIR)$(libdir)
++	$(INSTALL) -m 644 libutf8proc.dll.a $(DESTDIR)$(libdir)
+ 	mkdir -m 755 -p $(DESTDIR)$(pkgconfigdir)
+ 	$(INSTALL) -m 644 libutf8proc.pc $(DESTDIR)$(pkgconfigdir)/libutf8proc.pc
+-	ln -f -s libutf8proc.$(SHLIB_VERS_EXT) $(DESTDIR)$(libdir)/libutf8proc.$(SHLIB_EXT)
+-ifneq ($(OS),Darwin)
+-	ln -f -s libutf8proc.$(SHLIB_VERS_EXT) $(DESTDIR)$(libdir)/libutf8proc.so.$(MAJOR)
+-endif
++	mkdir -m 755 -p $(DESTDIR)/usr/bin
++	$(INSTALL) -m 755 cyg$(MODNAME)-$(MAJOR).dll $(DESTDIR)/usr/bin
+ 
+ MANIFEST.new:
+ 	rm -rf tmp
+Общие подкаталоги: utf8proc-2.6.1_orig/test и utf8proc-2.6.1/test

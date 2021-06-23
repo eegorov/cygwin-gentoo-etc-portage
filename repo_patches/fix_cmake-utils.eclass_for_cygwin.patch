@@ -1,0 +1,25 @@
+--- a/eclass/cmake-utils.eclass	2021-05-20 17:54:55.711335000 +0600
++++ b/eclass/cmake-utils.eclass	2021-05-20 17:55:17.005705200 +0600
+@@ -630,9 +630,12 @@
+ 
+ 	if use prefix-guest; then
+ 		cat >> "${build_rules}" <<- _EOF_ || die
++			IF (CYGWIN)
++			SET (WIN32 OFF CACHE BOOL "" FORCE)
++			ENDIF (CYGWIN)
+ 			# in Prefix we need rpath and must ensure cmake gets our default linker path
+ 			# right ... except for Darwin hosts
+-			IF (NOT APPLE)
++			IF (NOT CYGWIN)
+ 			SET (CMAKE_SKIP_RPATH OFF CACHE BOOL "" FORCE)
+ 			SET (CMAKE_PLATFORM_REQUIRED_RUNTIME_PATH "${EPREFIX}/usr/${CHOST}/lib/gcc;${EPREFIX}/usr/${CHOST}/lib;${EPREFIX}/usr/$(get_libdir);${EPREFIX}/$(get_libdir)"
+ 			CACHE STRING "" FORCE)
+@@ -645,7 +648,7 @@
+ 			SET (CMAKE_SKIP_RPATH OFF CACHE BOOL "" FORCE)
+ 			SET (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE CACHE BOOL "" FORCE)
+ 
+-			ENDIF (NOT APPLE)
++			ENDIF (NOT CYGWIN)
+ 		_EOF_
+ 	fi
+ 

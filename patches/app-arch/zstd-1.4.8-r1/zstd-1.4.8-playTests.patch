@@ -1,0 +1,17 @@
+--- a/tests/playTests.sh
++++ b/tests/playTests.sh
+@@ -84,11 +84,12 @@
+     size=${size}
+ fi
+ 
+-SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
++SCRIPT_DIR=$(cd "$(dirname $(realpath "$0"))" && pwd)
+ PRGDIR="$SCRIPT_DIR/../programs"
+ TESTDIR="$SCRIPT_DIR/../tests"
+ UNAME=$(uname)
+ ZSTDGREP="$PRGDIR/zstdgrep"
++println "\nSCRIPT_DIR=${SCRIPT_DIR}\nPRGDIR=${PRGDIR}\nTESTDIR=${TESTDIR}"
+ 
+ detectedTerminal=false
+ if [ -t 0 ] && [ -t 1 ]
+

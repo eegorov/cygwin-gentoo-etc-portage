@@ -1,0 +1,26 @@
+diff -ur libuuid-1.0.3_orig/c.h libuuid-1.0.3/c.h
+--- libuuid-1.0.3_orig/c.h	2014-08-12 15:07:36.000000000 +0700
++++ libuuid-1.0.3/c.h	2021-06-06 16:56:36.210002100 +0600
+@@ -210,10 +210,6 @@
+ 	return (num != 0 && ((num & (num - 1)) == 0));
+ }
+ 
+-#ifndef HAVE_LOFF_T
+-typedef int64_t loff_t;
+-#endif
+-
+ #if !defined(HAVE_DIRFD) && (!defined(HAVE_DECL_DIRFD) || HAVE_DECL_DIRFD == 0) && defined(HAVE_DIR_DD_FD)
+ #include <sys/types.h>
+ #include <dirent.h>
+diff -ur libuuid-1.0.3_orig/randutils.c libuuid-1.0.3/randutils.c
+--- libuuid-1.0.3_orig/randutils.c	2014-08-12 15:07:18.000000000 +0700
++++ libuuid-1.0.3/randutils.c	2021-06-06 16:57:05.617146500 +0600
+@@ -13,8 +13,6 @@
+ #include <string.h>
+ #include <sys/time.h>
+ 
+-#include <sys/syscall.h>
+-
+ #include "randutils.h"
+ 
+ #ifdef HAVE_TLS

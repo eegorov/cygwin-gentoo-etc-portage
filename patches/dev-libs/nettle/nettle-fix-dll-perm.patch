@@ -1,0 +1,21 @@
+diff -ur nettle-3.7.3_orig/Makefile.in nettle-3.7.3/Makefile.in
+--- nettle-3.7.3_orig/Makefile.in	2021-06-07 02:06:29.000000000 +0600
++++ nettle-3.7.3/Makefile.in	2021-06-23 13:48:10.254953600 +0600
+@@ -499,7 +499,7 @@
+ 
+ install-dll-nettle:
+ 	$(MKDIR_P) $(DESTDIR)$(bindir)
+-	$(INSTALL_DATA) $(LIBNETTLE_FORLINK) $(DESTDIR)$(bindir)/$(LIBNETTLE_FORLINK)
++	$(INSTALL_PROGRAM) $(LIBNETTLE_FORLINK) $(DESTDIR)$(bindir)/$(LIBNETTLE_FORLINK)
+ 
+ install-shared-nettle: $(LIBNETTLE_FORLINK) @IF_DLL@ install-dll-nettle
+ 	$(MKDIR_P) $(DESTDIR)$(libdir)
+@@ -512,7 +512,7 @@
+ 
+ install-dll-hogweed:
+ 	$(MKDIR_P) $(DESTDIR)$(bindir)
+-	$(INSTALL_DATA) $(LIBHOGWEED_FORLINK) $(DESTDIR)$(bindir)/$(LIBHOGWEED_FORLINK)
++	$(INSTALL_PROGRAM) $(LIBHOGWEED_FORLINK) $(DESTDIR)$(bindir)/$(LIBHOGWEED_FORLINK)
+ 
+ install-shared-hogweed: $(LIBHOGWEED_FORLINK) @IF_DLL@ install-dll-hogweed
+ 	$(MKDIR_P) $(DESTDIR)$(libdir)

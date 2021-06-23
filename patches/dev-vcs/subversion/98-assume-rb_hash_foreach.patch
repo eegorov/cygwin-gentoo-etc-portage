@@ -1,0 +1,11 @@
+--- a/configure.ac	2018-10-10 12:53:30.319783500 -0700
++++ b/configure.ac	2018-10-10 16:52:51.254760300 -0700
+@@ -1319,7 +1319,7 @@ else
+ fi
+ if test "$RUBY" != "none"; then
+   AC_MSG_CHECKING([rb_hash_foreach])
+-  if "$RUBY" -r mkmf -e 'exit(have_func("rb_hash_foreach") ? 0 : 1)' >/dev/null; then
++  if true; then #"$RUBY" -r mkmf -e 'exit(have_func("rb_hash_foreach") ? 0 : 1)' >/dev/null; then
+     AC_MSG_RESULT([yes])
+     if test -n "$RDOC"; then
+       AC_PATH_PROG(RDOC, "$RDOC", none)

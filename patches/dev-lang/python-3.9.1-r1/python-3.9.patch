@@ -1,0 +1,61 @@
+diff --git a/Modules/_xxsubinterpretersmodule.c b/Modules/_xxsubinterpretersmodule.c
+index de11c09..df1f104 100644
+--- a/Modules/_xxsubinterpretersmodule.c
++++ b/Modules/_xxsubinterpretersmodule.c
+@@ -1453,6 +1453,7 @@ newchannelid(PyTypeObject *cls, int64_t cid, int end, _channels *channels,
+     if (self == NULL) {
+         return NULL;
+     }
++	self->ob_base.ob_type = &PyType_Type;
+     self->id = cid;
+     self->end = end;
+     self->resolve = resolve;
+@@ -1761,7 +1762,8 @@ PyDoc_STRVAR(channelid_doc,
+ "A channel ID identifies a channel and may be used as an int.");
+ 
+ static PyTypeObject ChannelIDtype = {
+-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
++//    PyVarObject_HEAD_INIT(&PyType_Type, 0)
++    PyVarObject_HEAD_INIT(0, 0)
+     "_xxsubinterpreters.ChannelID", /* tp_name */
+     sizeof(channelid),              /* tp_basicsize */
+     0,                              /* tp_itemsize */
+diff --git a/configure b/configure
+index c7a7291..25a5d32 100644
+--- a/configure
++++ b/configure
+@@ -10571,7 +10571,7 @@ $as_echo "$as_me: WARNING: --with(out)-system-ffi is ignored on this platform" >
+ fi
+ 
+ if test "$with_system_ffi" = "yes" && test -n "$PKG_CONFIG"; then
+-    LIBFFI_INCLUDEDIR="`"$PKG_CONFIG" libffi --cflags-only-I 2>/dev/null | sed -e 's/^-I//;s/ *$//'`"
++    LIBFFI_INCLUDEDIR="`cygpath -u $(pkg-config --cflags-only-I libffi | sed -e 's:-I::')`"
+ else
+     LIBFFI_INCLUDEDIR=""
+ fi
+diff --git a/configure.ac b/configure.ac
+index 45e0af4..875d8e6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3105,7 +3105,7 @@ else
+ fi
+ 
+ if test "$with_system_ffi" = "yes" && test -n "$PKG_CONFIG"; then
+-    LIBFFI_INCLUDEDIR="`"$PKG_CONFIG" libffi --cflags-only-I 2>/dev/null | sed -e 's/^-I//;s/ *$//'`"
++    LIBFFI_INCLUDEDIR="`cygpath -u $(pkg-config --cflags-only-I libffi | sed -e 's:-I::')`"
+ else
+     LIBFFI_INCLUDEDIR=""
+ fi
+diff --git a/setup.py b/setup.py
+index d42eb9d..8c99da5 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2142,7 +2142,7 @@ class PyBuildExt(build_ext):
+                                libraries=['m']))
+ 
+         ffi_inc = sysconfig.get_config_var("LIBFFI_INCLUDEDIR")
+-        ffi_lib = None
++        ffi_lib = 'ffi'
+ 
+         ffi_inc_dirs = self.inc_dirs.copy()
+         if MACOS:
