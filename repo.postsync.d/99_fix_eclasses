@@ -1,4 +1,4 @@
-#!/home/e_egorov/gentoo/bin/bash
+#!/home/e_egorov/gentoo_new/bin/bash
 PATCHES_DIR=/home/e_egorov/gentoo_new/etc/portage/repo_patches
 REPO_DIR=/home/e_egorov/gentoo_new/var/db/repos/gentoo
 
