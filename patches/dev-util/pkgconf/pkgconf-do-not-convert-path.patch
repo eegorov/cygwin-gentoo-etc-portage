@@ -1,0 +1,21 @@
+diff -ur pkgconf-1.7.4_orig/libpkgconf/path.c pkgconf-1.7.4/libpkgconf/path.c
+--- pkgconf-1.7.4_orig/libpkgconf/path.c	2021-03-18 18:56:39.000000000 +0600
++++ pkgconf-1.7.4/libpkgconf/path.c	2021-06-24 10:00:09.892934100 +0600
+@@ -17,7 +17,7 @@
+ #include <libpkgconf/stdinc.h>
+ #include <libpkgconf/libpkgconf.h>
+ 
+-#ifdef HAVE_CYGWIN_CONV_PATH
++#if 0
+ # include <sys/cygwin.h>
+ #endif
+ 
+@@ -320,7 +320,7 @@
+ 	char *ti;
+ #endif
+ 
+-#ifdef HAVE_CYGWIN_CONV_PATH
++#if 0
+ 	/*
+ 	 * If we are on Cygwin or MSYS, then we want to convert the virtual path
+ 	 * to a real DOS path, using cygwin_conv_path().
