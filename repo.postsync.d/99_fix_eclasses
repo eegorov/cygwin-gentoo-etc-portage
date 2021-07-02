@@ -1,6 +1,6 @@
-#!/home/e_egorov/gentoo_new/bin/bash
-PATCHES_DIR=/home/e_egorov/gentoo_new/etc/portage/repo_patches
-REPO_DIR=/home/e_egorov/gentoo_new/var/db/repos/gentoo
+#!/home/e_egorov/gentoo/bin/bash
+PATCHES_DIR=/home/e_egorov/gentoo/etc/portage/repo_patches
+REPO_DIR=/home/e_egorov/gentoo/var/db/repos/gentoo
 
 pushd ${REPO_DIR} 1>/dev/null 2>&1
 

@@ -11,3 +11,4 @@ sys-apps/man-db **
 dev-perl/* **
 sys-devel/binutils **
 #=dev-lang/tcl-8.6.11 **
+<net-libs/nghttp2-9999 **

@@ -1,0 +1,12 @@
+diff -ur bash-5.1_orig/builtins/psize.sh bash-5.1/builtins/psize.sh
+--- bash-5.1_orig/builtins/psize.sh	2013-10-14 19:14:35.000000000 +0600
++++ bash-5.1/builtins/psize.sh	2021-06-30 12:17:25.755606200 +0600
+@@ -34,7 +34,7 @@
+ #
+ $used_mktemp || rm -f "$TMPFILE"
+ 
+-./psize.aux 2>"$TMPFILE" | sleep 3
++./psize.aux 2>"$TMPFILE" | cat- | cat - | cat - | sleep 3
+ 
+ if [ -s "$TMPFILE" ]; then
+ 	echo "#define PIPESIZE `cat "$TMPFILE"`"
