@@ -1,0 +1,11 @@
+diff -ur Python-3.9.3_orig/Lib/distutils/unixccompiler.py Python-3.9.3/Lib/distutils/unixccompiler.py
+--- Python-3.9.3_orig/Lib/distutils/unixccompiler.py	2021-07-05 17:01:02.399729400 +0600
++++ Python-3.9.3/Lib/distutils/unixccompiler.py	2021-07-05 17:11:57.370456000 +0600
+@@ -83,6 +83,7 @@
+     static_lib_format = shared_lib_format = dylib_lib_format = "lib%s%s"
+     xcode_stub_lib_format = dylib_lib_format
+     if sys.platform == "cygwin":
++        shared_lib_format="lib%s%s.a"
+         exe_extension = ".exe"
+ 
+     def preprocess(self, source, output_file=None, macros=None,
