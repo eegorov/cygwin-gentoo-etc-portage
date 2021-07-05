@@ -1,0 +1,12 @@
+diff -ur libuuid-1.0.3_orig/Makefile.in libuuid-1.0.3/Makefile.in
+--- libuuid-1.0.3_orig/Makefile.in	2014-08-12 14:19:20.000000000 +0600
++++ libuuid-1.0.3/Makefile.in	2021-07-05 14:07:40.500767400 +0600
+@@ -142,7 +142,7 @@
+ am__v_lt_1 = 
+ libuuid_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+ 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libuuid_la_CFLAGS) \
+-	$(CFLAGS) $(libuuid_la_LDFLAGS) $(LDFLAGS) -o $@
++	$(CFLAGS) $(libuuid_la_LDFLAGS) -no-undefined $(LDFLAGS) -o $@
+ am_test_uuid_OBJECTS = test_uuid-test_uuid.$(OBJEXT)
+ test_uuid_OBJECTS = $(am_test_uuid_OBJECTS)
+ test_uuid_DEPENDENCIES = libuuid.la $(am__DEPENDENCIES_1)
