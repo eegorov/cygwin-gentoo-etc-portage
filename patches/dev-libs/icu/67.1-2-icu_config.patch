@@ -1,0 +1,28 @@
+--- a/config/mh-cygwin	2020-04-22 16:04:20.000000000 -0400
++++ b/config/mh-cygwin	2020-07-21 14:15:14.549549500 -0400
+@@ -5,6 +5,11 @@
+ ## Copyright (c) 2001-2010, International Business Machines Corporation and
+ ## others. All Rights Reserved.
+ 
++# On Windows we generally have the DLLs in the bin directory rather than the lib directory.
++# This setting moves the ICU DLLs into the bin folder for MinGW/MSYS2 when "make install" is run.
++# If you prefer to have the DLLs in the lib folder, then set this to NO instead.
++MINGW_MOVEDLLSTOBINDIR = YES
++
+ ## Commands to generate dependency files
+ GEN_DEPS.c=	$(CC) -E -MM $(DEFS) $(CPPFLAGS)
+ GEN_DEPS.cc=	$(CXX) -E -MM $(DEFS) $(CPPFLAGS) $(CXXFLAGS)
+--- a/config/mh-cygwin64	2020-04-22 16:04:20.000000000 -0400
++++ b/config/mh-cygwin64	2020-07-21 14:15:24.562352000 -0400
+@@ -5,6 +5,11 @@
+ ## Copyright (c) 2014, International Business Machines Corporation and
+ ## others. All Rights Reserved.
+ 
++# On Windows we generally have the DLLs in the bin directory rather than the lib directory.
++# This setting moves the ICU DLLs into the bin folder for MinGW/MSYS2 when "make install" is run.
++# If you prefer to have the DLLs in the lib folder, then set this to NO instead.
++MINGW_MOVEDLLSTOBINDIR = YES
++
+ ## Commands to generate dependency files
+ GEN_DEPS.c=	$(CC) -E -MM $(DEFS) $(CPPFLAGS)
+ GEN_DEPS.cc=	$(CXX) -E -MM $(DEFS) $(CPPFLAGS) $(CXXFLAGS)

@@ -1,0 +1,12 @@
+diff -ur source_orig/config/mh-cygwin64 source/config/mh-cygwin64
+--- source_orig/config/mh-cygwin64	2021-07-05 13:24:15.208893400 +0600
++++ source/config/mh-cygwin64	2021-07-05 13:24:37.406096600 +0600
+@@ -96,7 +96,7 @@
+ ## Since symbolic links don't work the same way on Windows,
+ ## we only use the version major number.
+ #FINAL_SO_TARGET=$(basename $(SO_TARGET))$(SO_TARGET_VERSION).$(SO)
+-FINAL_SO_TARGET=$(basename $(SO_TARGET))$(SO_TARGET_VERSION_MAJOR).$(SO)
++FINAL_SO_TARGET=$(basename $(SO_TARGET)).$(SO)
+ MIDDLE_SO_TARGET=$(FINAL_SO_TARGET)
+ 
+ IMPORT_LIB = $(subst cyg,lib,$(FINAL_SO_TARGET)).$(A)#M#

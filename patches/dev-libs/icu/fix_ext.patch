@@ -1,0 +1,13 @@
+diff -ur source_orig/Makefile.in source/Makefile.in
+--- source_orig/Makefile.in	2021-04-08 06:10:27.000000000 +0600
++++ source/Makefile.in	2021-07-05 11:55:32.054315400 +0600
+@@ -16,6 +16,9 @@
+ 
+ include $(top_builddir)/icudefs.mk
+ 
++## Platform-specific setup
++include @platform_make_fragment@
++
+ docdir = $(datadir)/doc
+ docsubdir = $(PACKAGE)$(ICULIBDASHSUFFIX)/html
+ docfilesdir = doc/html

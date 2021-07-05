@@ -1,0 +1,39 @@
+diff -ur source_orig/tools/pkgdata/pkgdata.cpp source/tools/pkgdata/pkgdata.cpp
+--- source_orig/tools/pkgdata/pkgdata.cpp	2021-04-08 06:10:27.000000000 +0600
++++ source/tools/pkgdata/pkgdata.cpp	2021-07-05 13:06:37.148025200 +0600
+@@ -1167,7 +1167,7 @@
+     sprintf(cmd, "cd %s && %s %s %s",
+             targetDir,
+             pkgDataFlags[INSTALL_CMD],
+-            libFileNames[LIB_FILE_CYGWIN_VERSION],
++            libFileNames[LIB_FILE_CYGWIN],
+             installDir
+             );
+     result = runCommand(cmd);
+@@ -1193,7 +1193,7 @@
+     }
+ #endif
+ 
+-    if (noVersion) {
++    if (1) {
+         return result;
+     } else {
+         return pkg_createSymLinks(installDir, TRUE);
+@@ -1413,7 +1413,7 @@
+                      uprv_strlen(pkgDataFlags[LD_SONAME][0] == 0 ? "" : libFileNames[LIB_FILE_VERSION_MAJOR]) +
+                      uprv_strlen(pkgDataFlags[RPATH_FLAGS]) + uprv_strlen(pkgDataFlags[BIR_FLAGS]) + BUFFER_PADDING_SIZE);
+ #if U_PLATFORM == U_PF_CYGWIN
+-            length += static_cast<int32_t>(uprv_strlen(targetDir) + uprv_strlen(libFileNames[LIB_FILE_CYGWIN_VERSION]));
++            length += static_cast<int32_t>(uprv_strlen(targetDir) + uprv_strlen(libFileNames[LIB_FILE_CYGWIN]));
+ #elif U_PLATFORM == U_PF_MINGW
+             length += static_cast<int32_t>(uprv_strlen(targetDir) + uprv_strlen(libFileNames[LIB_FILE_MINGW]));
+ #endif
+@@ -1438,7 +1438,7 @@
+                 libFileNames[LIB_FILE_VERSION_TMP],
+                 pkgDataFlags[LDICUDTFLAGS],
+                 targetDir,
+-                libFileNames[LIB_FILE_CYGWIN_VERSION],
++                libFileNames[LIB_FILE_CYGWIN],
+ #elif U_PLATFORM == U_PF_AIX
+         sprintf(cmd, "%s %s%s;%s %s -o %s%s %s %s%s %s %s",
+                 RM_CMD,
