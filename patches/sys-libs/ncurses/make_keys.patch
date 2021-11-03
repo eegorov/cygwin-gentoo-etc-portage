@@ -1,0 +1,11 @@
+diff -ur ncurses-6.3_orig/ncurses/tinfo/make_keys.c ncurses-6.3/ncurses/tinfo/make_keys.c
+--- ncurses-6.3_orig/ncurses/tinfo/make_keys.c	2021-08-19 02:55:25.000000000 +0600
++++ ncurses-6.3/ncurses/tinfo/make_keys.c	2021-11-03 09:24:45.256571900 +0600
+@@ -37,6 +37,7 @@
+  * it that way lets us cut down on the size of the init_keytry() function.
+  */
+ 
++#define BUILDING_NCURSES
+ #define USE_TERMLIB 1
+ #include <build.priv.h>
+ 
