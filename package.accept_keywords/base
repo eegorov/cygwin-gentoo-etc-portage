@@ -18,3 +18,5 @@ net-analyzer/netcat **
 sys-apps/man-pages **
 sys-apps/man-pages-posix **
 app-i18n/man-pages-ru **
+app-crypt/libsecret **
+app-text/po4a **
